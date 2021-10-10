@@ -50,26 +50,31 @@ int main(int argc, char *argv[])
         }
         puts("Connection accepted!");
 
-        // Displays client IP address
+        // Display client IP address
         struct sockaddr_in* pV4Addr = (struct sockaddr_in*)&client_address;
         struct in_addr ipAddr = pV4Addr->sin_addr;
         char client_ip_address[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &ipAddr, client_ip_address, INET_ADDRSTRLEN);
         printf("Client IP address: %s\n", client_ip_address);
 
-        // sends the message
+        // define response content (HTML)
         char *content = "<html>\n<head>\n<title>Hello from the server!</title>\n</head>\n<body>\n<h1>Hello from the server!</h1>\n</body>\n</html>";
+
+        // define response date
         time_t t;
         time(&t);
         char *current_date;
         current_date = strcat(ctime(&t), " GMT-3");
         current_date[strcspn(current_date, "\n")] = 0;
+
         char server_message[1024];
+        // define response headers
         sprintf(server_message, "HTTP/1.0 200 OK\nDate: %s\nContent-Type: text/html\nContent-Length: %ld\n\n%s", current_date, strlen(content), content);
+        // sends the message
         send(client_socket, &server_message, sizeof(server_message), 0);
         printf("Message sent!\n");
     }
-    // close the socket
+    // closes the socket
     close(server_socket);
     return 0;
 }
