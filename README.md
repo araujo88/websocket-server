@@ -7,11 +7,11 @@ From a terminal, compile using:
 Run the application:
  - ./server.o
 
-In any web browser, type any of the following addresses:
+In a web browser, type any of the following addresses:
  - localhost:9002
  - 127.0.0.1:9002
 
-Then, the browser should display a page with the string "Hello from the server!".
+Then, the browser should display a HTML page with the h1 tag "Hello from the server!" and title "Hello from the server!".
 The full response from the server contains the following (example date shown):
 ```
 HTTP/1.0 200 OK
