@@ -9,26 +9,14 @@
 #include <time.h>
 #include <string.h>
 #include <signal.h> // for interrupt signal handler
+#include <assert.h> // assert()
 
 #define PORT 9002
 
 int server_socket; // global variable in order to be handled after SIGINT
 
-void handle_signal(int sig) 
-{
-    printf("\nCaught interrupt signal %d\n", sig);
-    // closes the socket
-    puts("Closing socket ...");
-    if (close(server_socket) == 0) {
-        puts("Socket closed!");
-        exit(0);
-    }
-    else {
-        perror("An error occurred while closing the socket: ");
-        printf("Error code: %d\n", errno);
-        exit(1);
-    }
-}
+void handle_signal(int sig);
+char *readHTML(char *filename);
 
 int main(int argc, char *argv[]) 
 {
@@ -78,7 +66,8 @@ int main(int argc, char *argv[])
         printf("Client IP address: %s\n", client_ip_address);
 
         // define response content (HTML)
-        char *content = "<html>\n<head>\n<title>Hello from the server!</title>\n</head>\n<body>\n<h1>Hello from the server!</h1>\n</body>\n</html>";
+        //char *content = "<html>\n<head>\n<title>Hello from the server!</title>\n</head>\n<body>\n<h1>Hello from the server!</h1>\n</body>\n</html>";
+        char *content = readHTML("index.html");
 
         // define response date
         time_t t;
@@ -95,4 +84,33 @@ int main(int argc, char *argv[])
         printf("Message sent!\n");
     }
     return 0;
+}
+
+void handle_signal(int sig) 
+{
+    printf("\nCaught interrupt signal %d\n", sig);
+    // closes the socket
+    puts("Closing socket ...");
+    if (close(server_socket) == 0) {
+        puts("Socket closed!");
+        exit(0);
+    }
+    else {
+        perror("An error occurred while closing the socket: ");
+        printf("Error code: %d\n", errno);
+        exit(1);
+    }
+}
+
+char *readHTML(char *filename) {
+    FILE *f = fopen(filename, "rt");
+    assert(f);
+    fseek(f, 0, SEEK_END);
+    long length = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    char *buffer = (char *) malloc(length + 1);
+    buffer[length] = '\0';
+    fread(buffer, 1, length, f);
+    fclose(f);
+    return buffer;
 }
