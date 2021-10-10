@@ -8,13 +8,26 @@
 #include <netinet/in.h>
 #include <time.h>
 #include <string.h>
+#include <signal.h> // for interrupt signal handler
 
 #define PORT 9002
+
+int server_socket; // global variable in order to be handled after SIGINT
+
+void handle_signal(int sig) 
+{
+    printf("\nCaught interrupt signal %d\n", sig);
+    // closes the socket
+    puts("Closing socket ...");
+    close(server_socket);
+    puts("Socket closed!");
+    exit(0);
+}
 
 int main(int argc, char *argv[]) 
 {
     // create the server socket
-    int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     if (server_socket < 0) {
         perror("Socket failed: ");
@@ -37,8 +50,9 @@ int main(int argc, char *argv[])
     }
     puts("Binding done");
 
+    signal(SIGINT, handle_signal);
     while (true) { // continuously listen for connections
-        puts("Waiting for incoming connections...");
+        puts("Waiting for incoming connections... (press Ctrl+C to quit)");
         listen(server_socket, 5);
         // accept the connection
         int client_socket; // client socket
@@ -64,8 +78,8 @@ int main(int argc, char *argv[])
         time_t t;
         time(&t);
         char *current_date;
-        current_date = strcat(ctime(&t), " GMT-3");
-        current_date[strcspn(current_date, "\n")] = 0;
+        current_date = ctime(&t);
+        current_date[strcspn(current_date, "\n")] = 0; // removes newline for correct parsing
 
         char server_message[1024];
         // define response headers
@@ -74,7 +88,5 @@ int main(int argc, char *argv[])
         send(client_socket, &server_message, sizeof(server_message), 0);
         printf("Message sent!\n");
     }
-    // closes the socket
-    close(server_socket);
     return 0;
 }
