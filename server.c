@@ -15,8 +15,8 @@
 
 int server_socket; // global variable in order to be handled after SIGINT
 
-void handle_signal(int sig);
-char *readHTML(char *filename);
+void handle_signal(int sig); // interrupt signal handler
+char *readHTML(char *filename); // utility function to read HTML file
 
 int main(int argc, char *argv[]) 
 {
