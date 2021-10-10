@@ -19,9 +19,15 @@ void handle_signal(int sig)
     printf("\nCaught interrupt signal %d\n", sig);
     // closes the socket
     puts("Closing socket ...");
-    close(server_socket);
-    puts("Socket closed!");
-    exit(0);
+    if (close(server_socket) == 0) {
+        puts("Socket closed!");
+        exit(0);
+    }
+    else {
+        perror("An error occurred while closing the socket: ");
+        printf("Error code: %d\n", errno);
+        exit(1);
+    }
 }
 
 int main(int argc, char *argv[]) 
