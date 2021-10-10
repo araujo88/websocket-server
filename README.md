@@ -1,5 +1,5 @@
 # C-websocket-endpoint
-An application which uses the C library socket.h to retrieve a HTTP request with response 200 and HTML data. Must be compiled and run in Unix systems.
+An application which uses the C library socket.h to create a server to handle a HTTP GET request with response 200 and HTML data. Must be compiled and run in Unix systems.
 
 From a terminal, compile using:
  - gcc server.c -o server.o
