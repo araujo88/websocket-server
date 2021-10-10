@@ -12,3 +12,19 @@ In any web browser, type any of the following addresses:
  - 127.0.0.1:9002
 
 Then, the browser should display a page with the string "Hello from the server!".
+The full response from the server contains the following (example date shown):
+```
+HTTP/1.0 200 OK
+Date: Sun Oct 10 00:17:35 2021 GMT-3
+Content-Type: text/html
+Content-Length: 114
+
+<html>
+<head>
+<title>Hello from the server!</title>
+</head>
+<body>
+<h1>Hello from the server!</h1>
+</body>
+</html>
+```
