@@ -7,4 +7,5 @@ Run the application:
 In any web browser, type any of the following addresses:
  - localhost:9002
  - 127.0.0.1:9002
+
 Then, the browser should display a page with the string "Hello from the server!".
