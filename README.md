@@ -11,4 +11,4 @@ In a web browser, type any of the following addresses:
  - localhost:9002
  - 127.0.0.1:9002
 
-Then, the browser should display the page "index.html".
+Then, the browser should display the page "index.html". If another URL is specified, the server returns a default "Error 404" page.
