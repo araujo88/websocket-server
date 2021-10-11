@@ -13,11 +13,7 @@
 int main(int argc, char *argv[]) 
 {
     int network_socket; // create a socket
-    // network_socket = socket(domain, type, protocol)
     network_socket = socket(AF_INET, SOCK_STREAM, 0);
-    // domain: AF_INET (IPv4 protocol) / AF_INET6 (Ipv6 protocol)
-    // type: SOCK_STREAM (TCP protocol) / SOCK_DGRAM (UDP protocol)
-    // protocol: Internet Protocol (IP) - 0
 
     if (network_socket < 0) {
         perror("Socket creation error");
