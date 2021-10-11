@@ -48,7 +48,11 @@ int main(int argc, char *argv[])
     signal(SIGINT, handle_signal);
     while (true) { // continuously listen for connections
         puts("Waiting for incoming requests... (press Ctrl+C to quit)\n");
-        listen(server_socket, 5);
+
+        if ((listen(server_socket, 5)) < 0) {
+            perror("Listen failed");
+            printf("Error code: %d\n", errno);
+        }
 
         // accept the connection
         int client_socket; // client socket
@@ -81,7 +85,6 @@ int main(int argc, char *argv[])
         
         char client_header[] = "GET / HTTP/1.1"; // request header to be handled
         char *request = strstr(client_message, client_header); // search within client message for header
-        printf("\nClient header: %s\n\n", request);
         memset(client_message, 0, sizeof(client_message)); // sets client message to null pointer
 
         /* --------------- Sending data --------------- */
