@@ -22,6 +22,8 @@ char *readHTML(char *filename); // utility function to read HTML file
 int main(int argc, char *argv[]) 
 {
     // create the server socket
+    puts("Creating socket ...");
+
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     if (server_socket < 0) {
@@ -29,6 +31,7 @@ int main(int argc, char *argv[])
         printf("Error code: %d\n", errno);
         return EXIT_FAILURE;
     }
+    puts("Socket created!");
 
     // define the server address
     struct sockaddr_in server_address;
@@ -38,12 +41,14 @@ int main(int argc, char *argv[])
     server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     // bind the socket to our specified IP and port
+    puts("Binding socket ...");
+
     if ((bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address))) < 0) {
         perror("Bind failed");
         printf("Error code: %d\n", errno);
         return EXIT_FAILURE;
     }
-    puts("Binding done");
+    puts("Binding done!");
 
     signal(SIGINT, handle_signal);
     while (true) { // continuously listen for connections
