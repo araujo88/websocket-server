@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
             sprintf(server_message, "HTTP/1.0 404 Not Found\nDate: %s\nContent-Type: text/html\nContent-Length: %ld\n\n%s", current_date, strlen(content), content);
             // sends the message
             send(client_socket, &server_message, sizeof(server_message), 0);
+            memset(content, 0, sizeof(content)); // sets content to null pointer (cleanup)
         } 
         else {
             // define response content (HTML)
