@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
         } 
         else {
             // define response content (HTML)
-            content = readHTML("index.html");
+            content = readHTML("static/index.html");
             // define response headers
             sprintf(server_message, "HTTP/1.0 200 OK\nDate: %s\nContent-Type: text/html\nContent-Length: %ld\n\n%s", current_date, strlen(content), content);
             // sends the message
