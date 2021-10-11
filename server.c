@@ -94,24 +94,23 @@ int main(int argc, char *argv[])
         current_date[strcspn(current_date, "\n")] = 0; // removes newline for correct parsing
 
         char server_message[BUFFER_SIZE];
+        char *content;
 
         if (request == NULL) {
             // define response content (HTML)
-            char *content = "<html>\n<head>\n<title>Error 404</title>\n</head>\n<body>\n<h1>Error 404</h1>\n<p>Error 404 - Not Found</p>\n</body>\n</html>";
+            content = "<html>\n<head>\n<title>Error 404</title>\n</head>\n<body>\n<h1>Error 404</h1>\n<p>Error 404 - Not Found</p>\n</body>\n</html>";
             // define response headers
             sprintf(server_message, "HTTP/1.0 404 Not Found\nDate: %s\nContent-Type: text/html\nContent-Length: %ld\n\n%s", current_date, strlen(content), content);
             // sends the message
             send(client_socket, &server_message, sizeof(server_message), 0);
-            memset(content, 0, sizeof(content)); // sets content to null pointer (cleanup)
         } 
         else {
             // define response content (HTML)
-            char *content = readHTML("index.html");
+            content = readHTML("index.html");
             // define response headers
             sprintf(server_message, "HTTP/1.0 200 OK\nDate: %s\nContent-Type: text/html\nContent-Length: %ld\n\n%s", current_date, strlen(content), content);
             // sends the message
             send(client_socket, &server_message, sizeof(server_message), 0);
-            memset(content, 0, sizeof(content)); // sets content to null pointer (cleanup)
         }
         memset(server_message, 0, sizeof(server_message)); // sets server data to null pointer (cleanup)
     }
